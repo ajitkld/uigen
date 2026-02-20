@@ -68,9 +68,27 @@ JWT sessions stored in HttpOnly cookies (`src/lib/auth.ts` using `jose`). Server
 
 ### Database
 
-Prisma with SQLite (`prisma/dev.db`). Two models:
-- **`User`**: email + hashed password
-- **`Project`**: belongs to optional User; stores `messages` (JSON) and `data` (serialized VirtualFileSystem JSON)
+Prisma with SQLite (`prisma/dev.db`). Schema defined in `prisma/schema.prisma`. Generated client outputs to `src/generated/prisma`.
+
+**`User`**
+| Field | Type | Notes |
+|-------|------|-------|
+| id | String | cuid, PK |
+| email | String | unique |
+| password | String | bcrypt hashed |
+| createdAt / updatedAt | DateTime | auto-managed |
+
+**`Project`**
+| Field | Type | Notes |
+|-------|------|-------|
+| id | String | cuid, PK |
+| name | String | |
+| userId | String? | optional — anonymous projects have no user |
+| messages | String | JSON string, default `"[]"` — chat history |
+| data | String | JSON string, default `"{}"` — serialized VirtualFileSystem |
+| createdAt / updatedAt | DateTime | auto-managed |
+
+`Project.userId` has `onDelete: Cascade` — deleting a user removes their projects.
 
 ## Key Technology Choices
 

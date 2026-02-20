@@ -139,7 +139,7 @@ export class MockLanguageModel implements LanguageModelV1 {
 
     // Step 3: Create App.jsx
     if (toolMessageCount === 0) {
-      const text = `This is a static response. You can place an Anthropic API key in the .env file to use the Anthropic API for component generation. Let me create an App.jsx file to display the component.`;
+      const text = `Sure! I'll get started on your ${componentName} component right away.`;
       for (const char of text) {
         yield { type: "text-delta", textDelta: char };
         await this.delay(15);
